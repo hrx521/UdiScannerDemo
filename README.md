@@ -1,4 +1,4 @@
-# UDI Scanner Demo — MD6100S 扫码枪 C# WinForm MDI 示例
+# UDI Scanner Demo — 扫码枪 C# WinForm MDI 示例
 
 一个面向医疗器械 UDI（GS1）扫码场景的 C# WinForm MDI 示例项目。
 主控类 `AutoComScannerManager` 负责扫码枪串口通信（USB 虚拟串口 / CDC-ACM）、数据分包、GS1 解析、线程安全状态与订阅分发；`MainMdiForm` / `ChildUdiForm` 演示 MDI 架构下串口"只开一次、窗体按需订阅"的正确用法。
@@ -9,7 +9,7 @@
 
 ## 功能特性
 
-- **MD6100S USB 虚拟串口（VCP）接入**：基于 `System.IO.Ports.SerialPort`，不依赖厂商私有 SDK。
+- **USB 虚拟串口（VCP）接入**：基于 `System.IO.Ports.SerialPort`，不依赖厂商私有 SDK。
 - **串口全局单例化生命周期**：主窗体启动打开、关闭释放，子窗体切换不重复启停，规避 COM 端口占用冲突。
 - **数据分包器与解析器职责分离**：以 `0x0D(CR)` 为帧结束符分包，解析器只接收单帧完整数据。
 - **GS1 UDI 解析**：支持 AI `01`（GTIN/DI）、`11`（生产日期）、`17`（失效日期）、`10`（批号）、`21`（序列号），输出统一的 `(01)xxxx(11)xxxx...` 格式。
@@ -48,8 +48,8 @@ UdiScannerDemo/
 | 开发工具 | Visual Studio 2019 / 2022 |
 | 项目类型 | Windows 窗体应用（.NET Framework） |
 | 程序集引用 | `System`（提供 `System.IO.Ports.SerialPort`）、`System.Windows.Forms`、`System.Drawing` |
-| 硬件 | 民德 Mindeo MD6100S（或同规范 GS1 二维扫码枪） |
-| 驱动 | 民德 USB CDC (VCP) 驱动；Win7 必须手动安装，Win10/11 多数可免驱 |
+| 硬件 | 支持GS1的二维扫码枪（或同规范 GS1 二维扫码枪） |
+| 驱动 | USB CDC (VCP) 驱动；Win7 必须手动安装，Win10/11 多数可免驱 |
 
 ---
 
@@ -68,14 +68,14 @@ UdiScannerDemo/
 
 配置完成后，扫码枪重新上电。
 
-> 若手册中找不到对应设置码，可使用民德上位机配置工具，以 VCP 方式连接设备后图形化修改。
+> 若手册中找不到对应设置码，可使用上位机配置工具，以 VCP 方式连接设备后图形化修改。
 
 ### 2. 安装驱动并确认端口
 
-设备管理器 → `端口 (COM 和 LPT)` → 出现 `Mindeo CDC` 对应的 `COMx`。
+设备管理器 → `端口 (COM 和 LPT)` → 出现 `CDC` 对应的 `COMx`。
 若显示为带黄色感叹号的未知设备，说明驱动未安装，此时不会生成 COM 口。
 
-串口参数固定：`9600, 8, N, 1`（MD6100S VCP 默认值）。
+串口参数固定：`9600, 8, N, 1`（VCP 默认值）。
 
 ### 3. 修改端口号并运行
 
